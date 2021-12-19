@@ -1,0 +1,169 @@
+/* font-family: 'Mochiy Pop P One', sans-serif;
+font-family: 'Yuji Syuku', serif; */
+
+.headerback {
+  background-image: url(../imgs/header.jpeg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  text-align: center;
+  height: 20vh;
+  width: 100%;
+  background-position: center center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.headerfont{
+  color: white;
+  font-size: 50px;
+  font-family: 'Mochiy Pop P One', sans-serif;
+  text-shadow: 4px 3px 0px rgba(102,0,0,10), 
+               9px 8px 0px rgba(0,0,0,0.15);
+  transform: rotate(-7.5deg);
+  justify-content: center;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.center{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #92cb97;
+  padding-bottom: 50px;
+}
+
+.parts{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: 'Yuji Syuku', serif; 
+  
+}
+
+.pfont{
+  font-family: 'Yuji Syuku', serif; 
+  text-align: right;
+}
+
+.textzone{
+height: 100px;
+width: 300px;
+  box-shadow: 3px 3px 3px 3px #555;
+}
+
+.tableborder{
+  border-top: solid grey 1px;
+  border-bottom: solid grey 1px;
+  border-collapse: collapse; 
+  padding: 5px;
+  font-family: 'Yuji Syuku', serif; 
+}
+.tableborder1{
+  border: solid grey 1px;
+  border-collapse: collapse; 
+  padding: 5px;
+  font-family: 'Yuji Syuku', serif;
+}
+.tableborder12{
+  border: solid grey 1px;
+  border-collapse: collapse; 
+  padding: 5px;
+  font-family: 'Yuji Syuku', serif;
+  width: 120px;
+}
+.tableborder2{
+  border: solid grey 1px;
+  border-collapse: collapse; 
+  padding: 5px;
+  font-family: 'Yuji Syuku', serif;
+  overflow-wrap: normal;
+}
+
+.tablearea{
+  border-collapse: collapse; 
+  margin: 8px;
+}
+
+.tablearea1{
+  border-collapse: collapse; 
+  margin: 8px;
+  table-layout: fixed;
+  width: 800px;
+}
+
+.btn1 {
+  color: #fff;
+  font-family: 'Yuji Syuku', serif; 
+  background-color: #eb6100;
+  border-bottom: 5px solid #b84c00;
+  -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, .3);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, .3);
+  margin-left: 8px;
+}
+.btn1:hover {
+  margin-top: 3px;
+  color: #fff;
+  background: #f56500;
+  border-bottom: 2px solid #b84c00;
+}
+
+.btn2 {
+  color: white;
+  font-family: 'Yuji Syuku', serif; 
+  background-color: #660000;
+  border-bottom: 5px solid #2c0101;
+  -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, .3);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, .3);
+  margin: 10px;
+  margin-left: 8px;
+}
+.btn2:hover {
+  margin-top: 3px;
+  color: #fff;
+  background: #660000;
+  border-bottom: 2px solid #660000;
+  margin: 10px;
+}
+
+.footerarea{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: whitesmoke;
+}
+
+ul {
+  padding: 0;
+  border-top: 1px solid #000000;
+  display: table;
+  /* 定義 */
+  table-layout: fixed;
+  width: 100%;
+}
+
+li {
+  text-align: center;
+  list-style-type: none;
+  border: 1px solid #666;
+  background-color: #FFF;
+  display: table-cell;
+  /* 定義 */
+  cursor: pointer;
+}
+
+li:hover {
+  background: #0066CC;
+  color: #fff;
+}
+
+#target {
+  width: 800px;
+  height: 400px;
+}
+

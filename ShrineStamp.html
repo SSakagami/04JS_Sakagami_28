@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="css/sample.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+P+One&family=Yuji+Syuku&display=swap" rel="stylesheet">
+<script src="js/jquery-3.5.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+<script async
+    src="https://maps.googleapis.com/maps/api/js?key=!!!!!!!!ＡＰＩキー削除!!!!!!!!!&region=JP&language=ja&callback=initMap">
+    // APIキーを入れてください
+</script>
+<title>寺社巡り日記</title>
+</head>
+<body>
+
+<main>
+  <div id="header" class=headerback> <div class="headerfont">寺社巡り日記</div></div>
+  <div class=center>
+  <table class="tablearea" >
+    <tr>
+      <td class="tableborder"><div class="pfont">訪問日：</td>
+      <td class="tableborder"><div><input type="text" id="datepicker"  ></div></td>
+    </tr>
+    <tr>
+      <td class="tableborder"> <div class="pfont">名称：</div></td>
+      <td class="tableborder"><input type="text" id="keyword"></td>
+    </tr>
+    <tr>
+      <td class="tableborder"> <div class="pfont">思い出メモ：</div> </td>
+      <td class="tableborder"><div class="parts"><textarea name="" id="memory" cols="30" rows="3"></textarea><button id="search" class="btn1">登録</button>
+        <button id="reload" class="btn2">履歴</button></div></td>
+    </tr>
+
+  </table>
+
+    <div id="target"></div>
+    <table id="output" class="tablearea1">
+      <tr>
+        <th class="tableborder12">日付</th>
+        <th class="tableborder12">訪問先</th>
+        <th class="tableborder1">思い出メモ</th>
+      </tr>
+    </table>
+ 
+    </div>
+
+
+
+<footer class=footerarea>
+  <div class="pfont">
+      本サイトは講習用に作成したものであり、私的利用を目的としています。
+  </div>
+</footer>
+
+</main>
+
+<script>
+  $( function() {
+    $( "#datepicker" ).datepicker();
+  } );
+
+  var map;
+  var target;
+  var marker;
+  var infoWindow;
+  // window.onload = function () {initMap();}
+
+  function initMap() {
+    //マップ初期表示の位置設定
+    var target = document.getElementById('target');
+    var centerp = {lat: 35.68978967065949, lng: 139.70059275523863};
+    //マップ表示
+    map = new google.maps.Map(target, {center: centerp,zoom: 12});
+  }
+ 
+  $('#search').on('click',function() {
+  // const lname=$("#keyword").val();//valを使用するとidの内容を取得可能
+  const date= $('#datepicker').val();
+  const memory = $("#memory").val();
+
+    var place = document.getElementById('keyword').value;
+    var geocoder = new google.maps.Geocoder();      // geocoderのコンストラクタ
+
+    geocoder.geocode({address: place}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        var bounds = new google.maps.LatLngBounds();
+
+        for (var i in results) {
+          if (results[0].geometry) {
+            // 緯度経度を取得
+            var latlng = results[0].geometry.location;
+            // 住所を取得
+            var address = results[0].formatted_address;
+            // 検索結果地が含まれるように範囲を拡大
+            bounds.extend(latlng);
+            // マーカーのセット
+            setMarker(place, latlng, address);
+            // マーカーへの吹き出しの追加
+            setInfoW(place, latlng, address);
+            // マーカーにクリックイベントを追加
+            markerEvent();
+            }
+          }
+          } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
+            alert("見つかりません");
+          } else {
+            console.log(status);
+            alert("エラー発生");
+          }
+    let keynum=localStorage.length;
+    const resultss=[date,place,memory,latlng,address];
+    localStorage.setItem(keynum,JSON.stringify(resultss));
+
+
+
+    for(let i=0; i<localStorage.length;i++){
+        var locations=JSON.parse(localStorage.getItem(i));
+  $('#output').remove;
+        setMarker(locations[0],locations[1],locations[2],locations[3],locations[4]);
+        h="<tr><td class='tableborder1'>"+ locations[0]+"</td><td class='tableborder1'>"+locations[1]+"</td><td class='tableborder2'>"+locations[2]+"</td></tr>";
+        $('#output').append(h);
+        }
+        markerEvent();
+    });
+  });
+      
+
+// 結果クリアーボタン押下時
+$('#clear').on('click', function() {
+  deleteMarkers();
+});
+
+// 再表示
+$('#reload').on('click',function(){
+  $('#output').remove;
+  for(let i=0; i<localStorage.length;i++){
+        var locations=JSON.parse(localStorage.getItem(i));
+        setMarker(locations[0],locations[1],locations[2],locations[3],locations[4]);
+        h="<tr><td  class='tableborder1'>"+ locations[0]+"</td><td class='tableborder1'>"+locations[1]+"</td><td class='tableborder2'>"+locations[2]+"</td></tr>";
+        $('#output').append(h);
+        }
+        markerEvent();
+});
+
+      // マーカーのセットを実施する
+      function setMarker(date,place,memory,latlng,address) {
+        var iconUrl = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
+          marker = new google.maps.Marker({
+            position: latlng,
+            map: map,
+            icon: iconUrl
+          });
+          infoWindow = new google.maps.InfoWindow({
+          content: "<div>"+date+"</div><a href='http://www.google.com/search?q=" + place + "' target='_blank'>" + place + "</a><br><br>" + memory + "<br><br>" + address + "<br><br><a href='http://www.google.com/search?q=" + place + "&tbm=isch' target='_blank'>画像検索 by google</a>"
+        });
+
+        }
+
+        // //マーカーを削除する
+        // function deleteMarkers() {
+        //   if(marker != null){
+        //     marker.setMap(null);
+        //   }
+        //   marker = null;
+        // }
+
+        // マーカーへの吹き出し
+        function setInfoW(date,place,memory,latlng,address) {
+          infoWindow = new google.maps.InfoWindow({
+            content: "<div>"+date+"</div><a href='http://www.google.com/search?q=" + place + "' target='_blank'>" + place + "</a><br><br>" + memory + "<br><br>" + address + "<br><br><a href='http://www.google.com/search?q=" + place + "&tbm=isch' target='_blank'>画像検索 by google</a>"
+        });
+      }
+
+      // クリックイベント
+      function markerEvent() {
+        marker.addListener('click', function() {
+          infoWindow.open(map, marker);
+        });
+      }
+
+</script>
+
+</body>
+</html>
